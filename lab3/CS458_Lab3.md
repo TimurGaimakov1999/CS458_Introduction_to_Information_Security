@@ -38,6 +38,7 @@ The following command generates two output files, <mark style="background-color:
 $ md5collgen -p prefix.txt -o out1.bin out2.bin
 ```
 
+![alt text](https://github.com/TimurGaimakov1999/CS458_Introduction_to_Information_Security/blob/main/lab3/pictures_of_figures/Figure1.png)
 <center>Figure 1: MD5 collision generation from a prefix</center>
 
 We can check whether the output files are distinct or not using the <mark style="background-color: #cceacc">diff</mark> command. We can also use the <mark style="background-color: #cceacc">md5sum</mark> command to check the <mark style="background-color: #e6e6e6">MD5</mark> hash of each output file. See the following commands.
@@ -61,6 +62,7 @@ Based on how <mark style="background-color: #e6e6e6">MD5</mark> works, we can de
 - Given two inputs <mark style="background-color: #e6e6e6">M</mark> and <mark style="background-color: #e6e6e6">N</mark>, if <mark style="background-color: #e6e6e6">MD5(M) = MD5(N)</mark>, i.e., the <mark style="background-color: #e6e6e6">MD5</mark> hashes of <mark style="background-color: #e6e6e6">M</mark> and <mark style="background-color: #e6e6e6">N</mark> are the same, then for any input <mark style="background-color: #e6e6e6">T</mark>, <mark style="background-color: #e6e6e6">MD5(M || T) = MD5(N || T)</mark>, where <mark style="background-color: #e6e6e6">||</mark> represents concatenation.
 - That is, if inputs <mark style="background-color: #e6e6e6">M</mark> and <mark style="background-color: #e6e6e6">N</mark> have the same hash, adding the same suffix <mark style="background-color: #e6e6e6">T</mark> to them will result in two outputs that have the same hash value.
 
+![alt text](https://github.com/TimurGaimakov1999/CS458_Introduction_to_Information_Security/blob/main/lab3/pictures_of_figures/Figure2.png)
 <center>Figure 2: How the MD5 algorithm works</center>
 
 This property holds not only for the <mark style="background-color: #e6e6e6">MD5</mark> hash algorithm, but also for many other hash algorithms.
@@ -107,6 +109,7 @@ unsigned char xyz[200] = {
 
 **Guidelines.** From inside the array, we can find two locations, from where we can divide the executable file into three parts: a <mark style="background-color: #e6e6e6">prefix</mark>, a <mark style="background-color: #e6e6e6">128-byte</mark> region, and a <mark style="background-color: #e6e6e6">suffix</mark>. The length of the prefix needs to be multiple of <mark style="background-color: #e6e6e6">64</mark> bytes. See Figure 3 for an illustration of how the file is divided.
 
+![alt text](https://github.com/TimurGaimakov1999/CS458_Introduction_to_Information_Security/blob/main/lab3/pictures_of_figures/Figure3.png)
 <center>Figure 3: Break the executable file into three pieces.</center>
 
 We can run <mark style="background-color: #cceacc">md5collgen</mark> on the <mark style="background-color: #e6e6e6">prefix</mark> to generate two outputs that have the same <mark style="background-color: #e6e6e6">MD5 hash value</mark>.
@@ -172,6 +175,7 @@ main()
 ```
 We can initialize the arrays <mark style="background-color: #e6e6e6">X</mark> and <mark style="background-color: #e6e6e6">Y</mark> with some values that can help us find their locations in the executable binary file. Our job is to change the contents of these two arrays, so we can generate two different versions that have the same <mark style="background-color: #e6e6e6">MD5 hash</mark>. In one version, the contents of <mark style="background-color: #e6e6e6">X</mark> and <mark style="background-color: #e6e6e6">Y</mark> are the same, so the benign code is executed; in the other version, the contents of <mark style="background-color: #e6e6e6">X</mark> and <mark style="background-color: #e6e6e6">Y</mark> are different, so the malicious code is executed. We can achieve this goal using a technique similar to the one used in **Task 3.** Figure 4 illustrates what the two versions of the program look like.
 
+![alt text](https://github.com/TimurGaimakov1999/CS458_Introduction_to_Information_Security/blob/main/lab3/pictures_of_figures/Figure4.png)
 <center>Figure 4: An approach to generate two hash-colliding programs with different behaviors.</center>
 
 From Figure 4, we know that these two binary files have the same <mark style="background-color: #e6e6e6">MD5 hash value</mark>, as long as <mark style="background-color: #e6e6e6">P</mark> and <mark style="background-color: #e6e6e6">Q</mark> are generated accordingly. In the first version, we make the contents of arrays <mark style="background-color: #e6e6e6">X</mark> and <mark style="background-color: #e6e6e6">Y</mark> the same, while in the second version, we make their contents different. Therefore, the only thing we need to change is the contents of these two arrays, and there is no need to change the logic of the programs.
